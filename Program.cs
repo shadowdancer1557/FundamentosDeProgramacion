@@ -11,72 +11,40 @@ namespace Ejercicio_1
         {
             int contadorPuntos = 0;
             int vidasJugador = 3;
-            int dadosEspeciales = 2;
+            int numeroDeRonda = 0;
             int tiro = 0;
+            int tiro2 = 0;
 
 
-            int contadorDe1s = 0;
-            int contadorDe6s = 0;
             string respuesta;
             bool finDelJuego = false;
-            bool resetContador6s = false;
+
        
             while (!finDelJuego)
             {
                 respuesta = null;
                 Console.WriteLine("Actualmente tienes: " + contadorPuntos + " puntos y tienes: " + vidasJugador + " vidas" );
-
-
-                if (DadosEspeciales(dadosEspeciales))
-                {
-                    Console.WriteLine("Tiene disponible " + dadosEspeciales + " Dados especiales ¿Desea usar 1? " + "s/n");
-                    respuesta = Console.ReadLine();
-                    
-                    if(respuesta.ToUpper() == "S")
-                    {
-                         tiro = LanzarDado(12);
-                        contadorPuntos += tiro;
-                        dadosEspeciales--;
-                        Console.WriteLine(tiro);
-                    }
-                    else if(respuesta.ToUpper() == "N")
-                    {
-                        Console.WriteLine("¿Deseas TIRAR o RETIRARTE? t/r");
-                        string respuesta1 = Console.ReadLine();
-
-                        if(respuesta1.ToUpper() == "T")
-                        {
-                            tiro = LanzarDado(6);
-                            contadorPuntos += tiro;
-                            Console.WriteLine(tiro);
-                        }
-                        else if(respuesta1.ToUpper() == "R")
-                        {
-                            Console.WriteLine("Te has retirado con: " + contadorPuntos + " puntos");
-                            finDelJuego = true;
-                        }
-                        else
-                        {
-                            Console.WriteLine("La respuesta ingresada no es valida, intente de nuevo");
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("La respuesta ingresada no es valida, intente de nuevo");
                         
-                    }
-                }
-                else
+                if(numeroDeRonda % 3 == 0 && numeroDeRonda !=0)
                 {
+                    Console.WriteLine("En esta ronda se tiraran 2 dados");
+
                     Console.WriteLine("¿Deseas TIRAR o RETIRARTE? t/r");
-                    string respuesta1 = Console.ReadLine();
-                    if (respuesta1.ToUpper() == "T")
+                    respuesta = Console.ReadLine();
+
+                    if (respuesta.ToUpper() == "T")
                     {
                         tiro = LanzarDado(6);
+                        tiro2 = LanzarDado(6);
                         contadorPuntos += tiro;
+                        contadorPuntos += tiro2;
+                        numeroDeRonda++;
+                        if (tiro == tiro2)
+                            vidasJugador++;
                         Console.WriteLine(tiro);
+                        Console.WriteLine(tiro2);
                     }
-                    else if (respuesta1.ToUpper() == "R")
+                    else if (respuesta.ToUpper() == "R")
                     {
                         Console.WriteLine("Te has retirado con: " + contadorPuntos + " puntos");
                         finDelJuego = true;
@@ -85,29 +53,36 @@ namespace Ejercicio_1
                     {
                         Console.WriteLine("La respuesta ingresada no es valida, intente de nuevo");
                     }
-
                 }
-                if (tiro == 1)
-                    contadorDe1s++;
-                if (tiro == 6)
+                else
                 {
-                    contadorDe6s++;
-                    resetContador6s = true;
+                    Console.WriteLine("¿Deseas TIRAR o RETIRARTE? t/r");
+                    respuesta = Console.ReadLine();
+
+                    if (respuesta.ToUpper() == "T")
+                    {
+                        tiro = LanzarDado(6);
+                        contadorPuntos += tiro;
+                        numeroDeRonda++;
+                        Console.WriteLine(tiro);
+                    }
+                    else if (respuesta.ToUpper() == "R")
+                    {
+                        Console.WriteLine("Te has retirado con: " + contadorPuntos + " puntos");
+                        finDelJuego = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("La respuesta ingresada no es valida, intente de nuevo");
+                    }
                 }
 
-                if (contadorDe1s == 2)
+
+               if(numeroDeRonda % 2 == 0)
                 {
                     vidasJugador--;
-                    contadorDe1s = 0;
                 }
 
-                if(contadorDe6s == 1 && resetContador6s)
-                {
-                    contadorDe6s = 0;
-                }else if(contadorDe6s == 2)
-                {
-                    vidasJugador++;
-                }
 
                 if (vidasJugador > 3)
                     vidasJugador = 3;
@@ -126,19 +101,6 @@ namespace Ejercicio_1
                 }
             }
 
-        }
-
-        //Determina si aun hay disponibles dados especiales
-        static bool DadosEspeciales(int cantDados)
-        {
-            if (cantDados > 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
         }
 
         static int LanzarDado(int cantCaras)
